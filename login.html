@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Login</title>
+		
+		<link rel="stylesheet" href="/includes/bootstrap/5.1.3/css/bootstrap.min.css" />
+		<style>
+		
+			h3 { text-align: center; }
+			
+			#btnLogon { padding-left: 100px; }
+			
+			#alerta {
+				margin-top: 80px;
+				color: red;
+				font-weight: bold;
+				font-size: 18px;
+			}
+
+			.card {
+				width: 400px;
+				margin-top: 20px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+	
+		<div class="container">
+		
+			<div class="card">
+				<h3>Sistema de login</h3>
+				<div class="card-body">
+
+					<form method="POST" action="#">
+						<div class="mb-3 row">
+							<label for="usuario" class="col-sm-3 col-form-label">Login:</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" name="usuario" id="usuario" onblur="verifica_usuario()" />
+							</div>
+						</div>
+						
+						<div class="mb-3 row">
+							<label for="senha" class="col-sm-3 col-form-label">Senha:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" name="senha" id="senha" onblur="verifica_senha()" />
+							</div>
+						</div>
+						
+						<button type="button" class="btn btn-primary" id="btnLogin" onclick="acesso_ok()">Entrar</button>
+						<button type="reset" class="btn btn-warning">Limpar</button>
+
+						<button type="button" class="btn btn-success" id="btnEditar" onclick="editar_dados()">Editar</button>
+						<button type="button" class="btn btn-danger" id="btnCancelar" onclick="cancelar_edicao()" style="display:none">Cancelar</button>
+					</form>				
+				
+				</div>
+			</div>
+				
+			
+			<center><span id="alerta"></span></center>
+		
+		</div>
+	</body>
+	
+	<script src="/includes/jquery/3.5.1/js/bootstrap.min.js"></script> 
+	<script src="/includes/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+	<script>
+		// console.log("JS Ok!");
+		
+		let catalogo_usuarios = ['sandy', 'jneto', 'chico', 'bento'];
+		let lista_senhas = ['brasil', 'Brasil', 'braSil', 'Br@sil'];
+		let ctrl_login = 0;
+		let ctrl_senha = 0;
+		
+		function verifica_usuario(){
+			let xItem = document.getElementById("usuario").value;
+			let xBusca = catalogo_usuarios.find(item => item === xItem);
+			let xResposta = "";
+
+			if(xBusca){
+				xResposta = "Login Ok";
+				ctrl_login = 1;
+			} else {
+				xResposta = "Erro! Login n�o encontrado";
+				ctrl_login = 0;
+			}
+			
+			console.log(xResposta);
+		}
+		
+		function verifica_senha(){
+			let xItem = document.getElementById("senha").value;
+			let xBusca = lista_senhas.find(item => item === xItem);
+			let xResposta = "";
+
+			if(xBusca){
+				xResposta = "Senha Ok";
+				ctrl_senha = 1;
+			} else {
+				xResposta = "Erro! Senha n�o encontrada";
+				ctrl_senha = 0;
+			}
+			
+			console.log(xResposta);			
+		}
+		
+		function acesso_ok(){
+			if (ctrl_login + ctrl_senha > 1)
+				console.log("formul�rio enviado");
+			else 
+				console.log("erro - reveja os dados de entrada");
+		}
+
+		// -------------- edição de cadastro de usuário ---------------- 
+
+		function editar_dados() {
+			if (ctrl_login && ctrl_senha) { // Verifica se o login e senha foram validados
+				let index = catalogo_usuarios.indexOf(document.getElementById("usuario").value.trim());
+				if (index >= 0) { // Verifica se o usuário existe no catálogo
+					document.getElementById("usuario").readOnly = false;
+					document.getElementById("senha").readOnly = false;
+					document.getElementById("btnEditar").style.display = "none";
+					document.getElementById("btnCancelar").style.display = "";
+					console.log("Campos de login e senha habilitados para edição.");
+				} else {
+					console.log("Erro: Usuário não encontrado.");
+				}
+			} else {
+				console.log("Erro: Realize a validação de login e senha antes de editar seus dados.");
+			}
+		}
+
+		function cancelar_edicao() {
+			document.getElementById("usuario").readOnly = true;
+			document.getElementById("senha").readOnly = true;
+			document.getElementById("btnEditar").style.display = "";
+			document.getElementById("btnCancelar").style.display = "none";
+			console.log("Edição de campos cancelada.");
+		}
+
+
+		
+	</script>
+</html>
